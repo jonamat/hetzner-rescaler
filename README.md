@@ -81,7 +81,7 @@ You can also pass a partial configuration file and define the missing vars as en
 version: '3.7'
 
 services:
-  wikiloc-earth-layar-testing:
+  hetzner-rescaler:
     image: jonamat/hetzner-rescaler
 
     // Provide the env vars
@@ -100,7 +100,7 @@ services:
 
 ## The configuration file
 The default path for the config file is `~/.hetzner-rescaler.yaml`.<br>
-You can provide (and create) a custom config path passing the `--config /custom/path` flag.<br>
+You can provide (and create) a custom config path passing the `--config /custom/path/config.yml` flag.<br>
 
 Config yaml file example
 ```yaml
