@@ -1,0 +1,30 @@
+name: Create release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    name: Release
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Create assets
+        run: |
+          chmod +x ./scripts/release.sh
+          ./scripts/release.sh
+
+      - name: Prepare release draft    
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          draft: true
+          body: ${{ github.event.head_commit.message }}
+          files: |
+            ./release/*.zip
