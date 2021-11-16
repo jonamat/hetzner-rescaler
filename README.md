@@ -1,20 +1,22 @@
 # Hetzner rescaler
 
 <p align="center">
+  <a href="https://github.com/jonamat/hetzner-rescaler/releases">
+    <img alt="Release" src="https://img.shields.io/github/v/release/jonamat/hetzner-rescaler" />
+  </a>
+  
   <a href="https://hub.docker.com/repository/docker/jonamat/hetzner-rescaler">
     <img alt="Docker Image Size (tag)" src="https://img.shields.io/docker/image-size/jonamat/hetzner-rescaler/latest" />
-  </a>
-
-  <a href="https://github.com/jonamat/hetzner-rescaler/actions">
-    <img alt="GitHub Workflow Status (branch)" src="https://img.shields.io/github/workflow/status/jonamat/hetzner-rescaler/Docker/master" />
   </a>
 
   <a href="https://github.com/jonamat/hetzner-rescaler/blob/master/go.mod">
     <img alt="GitHub go.mod Go version" src="https://img.shields.io/github/go-mod/go-version/jonamat/hetzner-rescaler" />
   </a>
-</p>
 
-<br>
+  <a href="https://github.com/jonamat/hetzner-rescaler/actions">
+    <img alt="GitHub Workflow Status" src="https://github.com/jonamat/hetzner-rescaler/actions/workflows/push.yml/badge.svg" />
+  </a>
+</p>
 
 Lightweight CLI tool to programmatically rescale your Hetzner virtual server daily to optimize your budget spending, scaling to a cheaper machine when you don't need or need few resources, and scaling to a more performant one when you know the load will be higher.
 
