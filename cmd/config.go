@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -258,8 +257,13 @@ func RunConfig(cmd *cobra.Command, args []string) {
 	viper.Set("HOUR_START", hourStart)
 	viper.Set("HOUR_STOP", hourStop)
 
-	// Remove old config file if exists
-	if _, err := os.Stat(viper.ConfigFileUsed()); !errors.Is(err, os.ErrNotExist) {
+	// Remove old config file if exists or create a new one
+	if _, err := os.Stat(viper.ConfigFileUsed()); err != nil {
+		if _, err := os.Create(viper.ConfigFileUsed()); err != nil {
+			color.Red("Error: %s", err.Error())
+			return
+		}
+	} else {
 		if err := os.Remove(viper.ConfigFileUsed()); err != nil {
 			color.Red("Error: %s", err.Error())
 			return
@@ -267,7 +271,7 @@ func RunConfig(cmd *cobra.Command, args []string) {
 	}
 
 	// Save the configuration
-	if err := viper.SafeWriteConfig(); err != nil {
+	if err := viper.WriteConfig(); err != nil {
 		color.Red("Error: %s", err.Error())
 		return
 	}
