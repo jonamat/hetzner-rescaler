@@ -163,7 +163,7 @@ func RunConfig(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	baseServerType := serverTypes[index]
+	baseServerType := elegibleServerTypes[index]
 
 	/* ----------------------------- Top server type ---------------------------- */
 	color.Yellow("\n\n### TOP SERVER TYPE")
@@ -181,7 +181,7 @@ func RunConfig(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	topServerType := serverTypes[index]
+	topServerType := elegibleServerTypes[index]
 
 	/* --------------------------------- Checks --------------------------------- */
 	if topServerType.ID == baseServerType.ID {
