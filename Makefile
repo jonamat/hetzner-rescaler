@@ -22,13 +22,16 @@ build:
 build-static:
 	CGO_ENABLED=0 && GOOS=linux && GOARCH=amd64 && go build -a -tags netgo -ldflags '-w -extldflags "-static"' -o ./bin/hetzner-rescaler_static ./main.go
 
-build-docker:
-	docker build -t jonamat/hetzner-rescaler:latest .
-	docker build -t jonamat/hetzner-rescaler:${VERSION} .
+# Multi-platform build requires buildx installed
+build-multiarch-docker: 
+	go mod vendor && \
+	docker buildx build --platform linux/arm/v7,linux/amd64,linux/arm64 -t jonamat/hetzner-rescaler:latest -t jonamat/hetzner-rescaler:${VERSION} . --push
+
+build-docker: 
+	docker build -t jonamat/hetzner-rescaler:latest -t jonamat/hetzner-rescaler:${VERSION} .
 
 push-docker:
-	docker push jonamat/hetzner-rescaler:latest
-	docker push jonamat/hetzner-rescaler:${VERSION} .
+	docker push jonamat/hetzner-rescaler:latest jonamat/hetzner-rescaler:${VERSION}
 
 create-release:
 	./scripts/release.sh
