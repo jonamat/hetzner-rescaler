@@ -67,7 +67,7 @@ func RunStart(cmd *cobra.Command, args []string) {
 	// Print info about current configuration
 	fmt.Printf(`The server named "%s" with ID %s, currently of type %s, will be:
 → Upgraded to server type %s everyday at %s
-→ Downgraded to server type %s everyday at %s`,
+→ Downgraded to server type %s everyday at %s`+"\n\n",
 		color.GreenString(server.Name),
 		color.GreenString(strconv.Itoa(server.ID)),
 		color.GreenString(server.ServerType.Name),
