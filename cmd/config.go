@@ -151,7 +151,7 @@ func RunConfig(cmd *cobra.Command, args []string) {
 
 	// Prompt server type selection
 	baseServerTypeSelect := promptui.Select{
-		Label:     "What is the base server type (cheapest) you want to rescale?",
+		Label:     "What type of base (cheaper) server type you want to rescale to?",
 		Items:     elegibleServerTypes,
 		Templates: templates,
 	}
@@ -169,7 +169,7 @@ func RunConfig(cmd *cobra.Command, args []string) {
 
 	// Prompt server type selection
 	topServerTypeSelect := promptui.Select{
-		Label:     "What is the base server type (cheapest) you want to rescale?",
+		Label:     "What type of top server type you want to rescale to?",
 		Items:     elegibleServerTypes,
 		Templates: templates,
 	}

@@ -52,9 +52,9 @@ Pull the image from dockerhub
 docker pull jonamat/hetzner-rescaler
 ```
 
-**Opt A:** Create a config file inside the container & start immediately 
+**Opt A:** Create a config file inside the container & start immediately *beta* 
 ```sh
-docker run -ti jonamat/hetzner-rescaler hr plug
+docker run -ti jonamat/hetzner-rescaler hetzner-rescaler plug
 ```
 
 **Opt B:** Mounting a configuration file 
