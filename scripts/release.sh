@@ -14,10 +14,10 @@ mkdir ./release/ \
 ./release/${PREFIX}linux-arm64/
 
 # Copy assets
-cp -R ./LICENCE ./README.md ./CHANGELOG.md ./release/${PREFIX}windows-amd64/ \
-cp -R ./LICENCE ./README.md ./CHANGELOG.md ./release/${PREFIX}linux-amd64/ \
-cp -R ./LICENCE ./README.md ./CHANGELOG.md ./release/${PREFIX}linux-arm/ \
-cp -R ./LICENCE ./README.md ./CHANGELOG.md ./release/${PREFIX}linux-arm64/
+cp -R ./LICENSE ./README.md ./CHANGELOG.md ./release/${PREFIX}windows-amd64/ && \
+cp -R ./LICENSE ./README.md ./CHANGELOG.md ./release/${PREFIX}linux-amd64/ && \
+cp -R ./LICENSE ./README.md ./CHANGELOG.md ./release/${PREFIX}linux-arm/ && \
+cp -R ./LICENSE ./README.md ./CHANGELOG.md ./release/${PREFIX}linux-arm64/
 
 # Build for each platform
 GOOS=windows GOARCH=amd64 go build -o ./release/${PREFIX}windows-amd64/hetzner-rescaler.exe . &
