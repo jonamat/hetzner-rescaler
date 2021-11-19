@@ -34,8 +34,6 @@ jobs:
       - name: Get latest tag
         id: 'latesttag'
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        with:
-          fallback: master
 
       - name: Get deps for multi-arch build
         run: go mod vendor
