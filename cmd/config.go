@@ -258,8 +258,13 @@ func RunConfig(cmd *cobra.Command, args []string) {
 	viper.Set("HOUR_STOP", hourStop)
 
 	// Remove old config file if exists or create a new one
-	if _, err := os.Stat(viper.ConfigFileUsed()); err != nil {
-		if _, err := os.Create(viper.ConfigFileUsed()); err != nil {
+	configPath := viper.ConfigFileUsed()
+	if configPath == "" {
+		configPath = os.ExpandEnv("$HOME/.hetzner-rescaler.yaml")
+	}
+
+	if _, err := os.Stat(configPath); err != nil {
+		if _, err := os.Create(configPath); err != nil {
 			color.Red("Error: %s", err.Error())
 			return
 		}
