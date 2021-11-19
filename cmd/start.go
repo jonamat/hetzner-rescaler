@@ -64,10 +64,21 @@ func RunStart(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	currentTime := time.Now()
+	tz, tzOffsetNum := currentTime.Zone()
+	tzOffset := strconv.Itoa(tzOffsetNum / 3600) // seconds to hours
+	if tzOffsetNum > 0 {
+		tzOffset = "+" + tzOffset
+	}
+
 	// Print info about current configuration
 	fmt.Printf(`The server named "%s" with ID %s, currently of type %s, will be:
 → Upgraded to server type %s everyday at %s
-→ Downgraded to server type %s everyday at %s`+"\n\n",
+→ Downgraded to server type %s everyday at %s
+
+The timezone is set to %s with a UTC offset of %s.
+The time on this machine is %s.
+`+"\n\n",
 		color.GreenString(server.Name),
 		color.GreenString(strconv.Itoa(server.ID)),
 		color.GreenString(server.ServerType.Name),
@@ -75,6 +86,9 @@ func RunStart(cmd *cobra.Command, args []string) {
 		color.GreenString(hourStart),
 		color.GreenString(baseServerName),
 		color.GreenString(hourStop),
+		color.GreenString(tz),
+		color.GreenString(tzOffset),
+		color.GreenString(currentTime.Format("15:04")),
 	)
 
 	// Ask for confirmation if --skip is not set
