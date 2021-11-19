@@ -281,5 +281,5 @@ func RunConfig(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	color.New(color.FgGreen).Add(color.Bold).Println("Configuration saved")
+	color.New(color.FgGreen).Add(color.Bold).Println("\n\nConfiguration saved\n")
 }
