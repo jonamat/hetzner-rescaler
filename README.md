@@ -45,6 +45,7 @@ Export these env vars to override or completely bypass the generated configurati
 | `TOP_SERVER_NAME`  | The code of the high performance server type<br>                             |
 | `HOUR_START`       | 24h format, colon separated hour when the server should be upgraded<br>      |
 | `HOUR_STOP`        | 24h format, colon separated hour when the server should be downgraded<br>    |
+| `TZ`               | If defined, change the timezone of the timer<br>                             |
 
 ### Use with Docker
 Pull the image from dockerhub

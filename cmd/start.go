@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"strconv"
 	"time"
 
@@ -64,7 +65,14 @@ func RunStart(cmd *cobra.Command, args []string) {
 		return
 	}
 
-	currentTime := time.Now()
+	// Get timezione & time info
+	location, err := time.LoadLocation(os.Getenv("TZ"))
+	if err != nil {
+		color.Red("Error while loading timezone: %s.\nFallback to UTC", err.Error())
+		location = time.UTC
+	}
+
+	currentTime := time.Now().In(location)
 	tz, tzOffsetNum := currentTime.Zone()
 	tzOffset := strconv.Itoa(tzOffsetNum / 3600) // seconds to hours
 	if tzOffsetNum > 0 {

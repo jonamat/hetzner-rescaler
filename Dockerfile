@@ -4,6 +4,8 @@ WORKDIR /build
 ARG TARGETOS
 ARG TARGETARCH
 
+RUN apt update && apt install ca-certificates && apt install tzdata
+
 COPY . .
 
 # Create statically linked server binary
@@ -14,5 +16,6 @@ WORKDIR /
 
 COPY --from=builder /build/bin/hetzner-rescaler /bin/hetzner-rescaler
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 
 CMD ["hetzner-rescaler", "start", "-s"]
