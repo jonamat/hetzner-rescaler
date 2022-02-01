@@ -26,6 +26,9 @@ build-static:
 build-multiarch-docker: 
 	go mod vendor && \
 	docker buildx build --platform linux/arm/v7,linux/amd64,linux/arm64 -t jonamat/hetzner-rescaler:latest -t jonamat/hetzner-rescaler:${VERSION} . --push
+build-multiarch-docker-alpha: 
+	go mod vendor && \
+	docker buildx build --platform linux/arm/v7,linux/amd64,linux/arm64 -t jonamat/hetzner-rescaler:alpha-latest . --push
 
 build-docker: 
 	docker build -t jonamat/hetzner-rescaler:latest -t jonamat/hetzner-rescaler:${VERSION} .
