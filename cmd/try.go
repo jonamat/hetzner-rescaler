@@ -9,7 +9,7 @@ import (
 	"github.com/hetznercloud/hcloud-go/hcloud"
 	"github.com/jonamat/hetzner-rescaler/pkg/config"
 	"github.com/jonamat/hetzner-rescaler/pkg/rescaler"
-	"github.com/manifoldco/promptui"
+	"github.com/spaceweasel/promptui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

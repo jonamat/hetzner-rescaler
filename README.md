@@ -45,6 +45,7 @@ Export these env vars to override or completely bypass the generated configurati
 | `TOP_SERVER_NAME`  | The code of the high performance server type<br>                             |
 | `HOUR_START`       | 24h format, colon separated hour when the server should be upgraded<br>      |
 | `HOUR_STOP`        | 24h format, colon separated hour when the server should be downgraded<br>    |
+| `WEEK_DAYS`        | Comma separated week day names<br>         |
 | `TZ`               | If defined, change the timezone of the timer<br>                             |
 
 ### Use with Docker
@@ -111,6 +112,9 @@ base_server_name: cx11
 top_server_name: cx21
 hour_start: "09:00"
 hour_stop: "20:00"
+week_days: 
+  - Monday
+  - Friday
 ```
 
 ## Commands

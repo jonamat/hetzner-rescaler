@@ -6,13 +6,14 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/fatih/color"
 	"github.com/hetznercloud/hcloud-go/hcloud"
 	"github.com/jonamat/hetzner-rescaler/pkg/config"
 	"github.com/jonamat/hetzner-rescaler/pkg/rescaler"
-	"github.com/manifoldco/promptui"
+	"github.com/spaceweasel/promptui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -50,6 +51,7 @@ func RunStart(cmd *cobra.Command, args []string) {
 	baseServerName := viper.GetString("BASE_SERVER_NAME")
 	hourStart := viper.GetString("HOUR_START")
 	hourStop := viper.GetString("HOUR_STOP")
+	weekDays := viper.GetStringSlice("WEEK_DAYS")
 
 	// Create hetzner Cloud API client
 	client := hcloud.NewClient(hcloud.WithToken(hCloudToken))
@@ -81,8 +83,10 @@ func RunStart(cmd *cobra.Command, args []string) {
 
 	// Print info about current configuration
 	fmt.Printf(`The server named "%s" with ID %s, currently of type %s, will be:
-→ Upgraded to server type %s everyday at %s
-→ Downgraded to server type %s everyday at %s
+→ Upgraded to server type %s every selected day at %s
+→ Downgraded to server type %s every selected day at %s
+
+The days of the week selected for rescaling are: %s
 
 The timezone is set to %s with a UTC offset of %s.
 The time on this machine is %s.
@@ -94,6 +98,7 @@ The time on this machine is %s.
 		color.GreenString(hourStart),
 		color.GreenString(baseServerName),
 		color.GreenString(hourStop),
+		color.GreenString(strings.Join(weekDays, ", ")),
 		color.GreenString(tz),
 		color.GreenString(tzOffset),
 		color.GreenString(currentTime.Format("15:04")),
@@ -121,9 +126,19 @@ The time on this machine is %s.
 
 	for {
 		hour, min, _ := time.Now().Clock()
+		weekDay := time.Now().Weekday().String()
 		currentHour := fmt.Sprintf("%02d:%02d", hour, min)
 
-		if currentHour == hourStart {
+		// Check if it should rescale today
+		rescaleToday := false
+		for _, v := range weekDays {
+			if v == weekDay {
+				rescaleToday = true
+				break
+			}
+		}
+
+		if rescaleToday && currentHour == hourStart {
 			log.Println(color.GreenString("Start upgrading server..."))
 
 			if err := rescaler.Rescale(client, server, topServerName); err != nil {
@@ -145,7 +160,7 @@ The time on this machine is %s.
 			log.Println(color.GreenString("Server successfully upgraded\n"))
 		}
 
-		if currentHour == hourStop {
+		if rescaleToday && currentHour == hourStop {
 			log.Println(color.GreenString("Start downgrading server..."))
 
 			if err := rescaler.Rescale(client, server, baseServerName); err != nil {

@@ -10,7 +10,7 @@ import (
 
 	"github.com/fatih/color"
 	"github.com/hetznercloud/hcloud-go/hcloud"
-	"github.com/manifoldco/promptui"
+	"github.com/spaceweasel/promptui"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -22,6 +22,16 @@ type extServerType struct {
 	Memory     int
 	PriceHour  string
 	PriceMonth string
+}
+
+var weekDays = []string{
+	time.Monday.String(),
+	time.Tuesday.String(),
+	time.Wednesday.String(),
+	time.Thursday.String(),
+	time.Friday.String(),
+	time.Saturday.String(),
+	time.Sunday.String(),
 }
 
 /* Config command */
@@ -218,12 +228,33 @@ func RunConfig(cmd *cobra.Command, args []string) {
 		return
 	}
 
+	/* -------------------------------- Week days ------------------------------- */
+	color.Yellow("\n\n### RESCALE WEEK DAYS")
+
+	weekDaysInput := promptui.MultiSelect{
+		Label: "Select the week days you want to rescale your server (space for select, enter for confirm)",
+		Items: weekDays,
+	}
+
+	weekDaysIndexes, err := weekDaysInput.Run()
+	if err != nil {
+		color.Red("Error: %s", err.Error())
+		return
+	}
+
+	selectedWeekDays := []string{}
+	for _, day := range weekDaysIndexes {
+		selectedWeekDays = append(selectedWeekDays, weekDays[day])
+	}
+
 	/* --------------------------------- Summary -------------------------------- */
 	color.Yellow("\n\n### SUMMARY")
 
 	fmt.Printf(`The server named "%s" with ID %s, currently of type %s, will be:
-→ Upgraded to server type %s everyday at %s
-→ Downgraded to server type %s everyday at %s`,
+→ Upgraded to server type %s every selected day at %s
+→ Downgraded to server type %s every selected day at %s
+
+The days of the week selected for rescaling are: %s`,
 		color.GreenString(server.Name),
 		color.GreenString(strconv.Itoa(server.ID)),
 		color.GreenString(server.ServerType.Name),
@@ -231,6 +262,7 @@ func RunConfig(cmd *cobra.Command, args []string) {
 		color.GreenString(hourStart),
 		color.GreenString(baseServerType.Name),
 		color.GreenString(hourStop),
+		color.GreenString(strings.Join(selectedWeekDays, ", ")),
 	)
 
 	/* --------------------------------- Confirm -------------------------------- */
@@ -256,6 +288,7 @@ func RunConfig(cmd *cobra.Command, args []string) {
 	viper.Set("TOP_SERVER_NAME", topServerType.Name)
 	viper.Set("HOUR_START", hourStart)
 	viper.Set("HOUR_STOP", hourStop)
+	viper.Set("WEEK_DAYS", selectedWeekDays)
 
 	// Remove old config file if exists or create a new one
 	configPath := viper.ConfigFileUsed()
